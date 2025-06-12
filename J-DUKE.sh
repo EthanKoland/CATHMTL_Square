@@ -11,7 +11,7 @@
 #SBATCH -o gpu-test-%j.out               # Standard output log
 #SBATCH -e gpu-test-%j.err               # Standard error log
 module add python/anaconda/2024.06/
-module add cuda/10.2.89
+module add cuda/11.8
 nvidia-smi
 
 source activate CATHMTL
