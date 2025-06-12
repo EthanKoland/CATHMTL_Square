@@ -13,6 +13,7 @@ from models.trainer import Trainer
 from utils.hyper_para import HyperParameters
 from datasets.oct_dataset import OCTDataset
 from datasets.xray_dataset import RandomXRayDataset, XRayCathUCLDataset
+from datasets.square_dataset import Sqaure_Dataset
 """
 Initial setup
 """
@@ -91,6 +92,12 @@ elif config['dataset'] == 'XRayNew':
     train_loader = DataLoader(train_dataset, batch_size=config['batch_size'], shuffle=True)
     config['split'] = 'val'
     val_dataset = RandomXRayDataset(config=config)
+    val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
+elif config['dataset'] == 'square':
+    config['data_root'] = os.path.join(config['data_root'], 'square')
+    train_dataset = OCTDataset(data_root=config['data_root'], split='train', size=config['size'])
+    train_loader = DataLoader(train_dataset, batch_size=config['batch_size'], shuffle=True)
+    val_dataset = OCTDataset(data_root=config['data_root'], split='val', size=config['size'])
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
 else:
     raise NotImplementedError(f'{config["dataset"]} dataset not implemented')

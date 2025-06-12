@@ -158,3 +158,61 @@ class Loss(nn.Module):
             losses['total_loss'] += 1 * losses['of_loss']
 
         return losses
+    
+class square_loss(nn.Module):
+    def __init__(self, config):
+        self.multitask = config['multitask']
+
+        self.bce_criterion = BootstrappedCE(config['start_warm'], config['end_warm'])
+        self.dice_criterion = DiceLoss()
+        if self.multitask:
+            self.hm_criterion = FocalLoss()
+            # self.hm_criterion = nn.MSELoss()
+            self.bs_criterion = nn.L1Loss()
+            self.of_criterion = RegL1Loss()
+
+    '''
+    OutputData
+    '''
+    def forward(self, output, data, it, is_train=True):
+        losses = defaultdict(int)
+
+        losses['total_loss'] = 0
+        if is_train:
+            loss, p = self.bce_criterion(output['seg_logits'], data['mask'][:, 0], it)
+            losses['p'] += p
+            losses['ce_loss'] += loss
+            losses['dice_loss'] += self.dice_criterion(output['seg_prob'], data['mask'][:, 0])
+            if self.multitask:
+                output['hm'] = _sigmoid(output['hm'])
+                losses['hm_loss'] += self.hm_criterion(output['hm'], data['hm'])
+                losses['dense_bs_loss'] += self.bs_criterion(
+                    output['dense_bs'] * data['dense_bs_mask'], data['dense_bs'] * data['dense_bs_mask']
+                )
+                losses['of_loss'] += self.of_criterion(output['of'], data['of_mask'], data['ind'], data['of'])
+        else:
+            with torch.no_grad():
+                loss, p = self.bce_criterion(output['seg_logits'], data['mask'][:, 0], 0)
+                losses['p'] += p
+                losses['ce_loss'] += loss.item()
+                losses['dice_loss'] = self.dice_criterion(output['seg_prob'], data['mask'][:, 0]).item()
+                if self.multitask:
+                    losses['hm_loss'] += self.hm_criterion(output['hm'], data['hm']).item()
+                    losses['dense_bs_loss'] += self.bs_criterion(
+                        output['dense_bs'] * data['dense_bs_mask'], data['dense_bs'] * data['dense_bs_mask']
+                    ).item()
+                    losses['of_loss'] += self.of_criterion(output['of'], data['of_mask'], data['ind'], data['of']).item()
+
+        losses['total_loss'] += losses['ce_loss'] + losses['dice_loss']
+        if self.multitask:
+            losses['total_loss'] += 1 * losses['hm_loss']
+            losses['total_loss'] += 1 * losses['dense_bs_loss']
+            losses['total_loss'] += 1 * losses['of_loss']
+
+        return losses
+    
+def lossManager(config):
+    if config['dataset'] == 'square':
+        return square_loss(config)
+    else:
+        return Loss(config)

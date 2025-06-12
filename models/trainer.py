@@ -6,7 +6,7 @@ import torch.optim as optim
 
 from models.network import ODSNet
 from models.networks import *
-from models.losses import Loss
+from models.losses import lossManager
 from utils.log_integrator import Integrator
 from utils.image_saver import pool_pairs
 
@@ -17,7 +17,7 @@ class Trainer:
         self.config = config
 
         self.model = self.get_model().cuda()
-        self.criterion = Loss(config)
+        self.criterion = lossManager(config)
 
         # Set up logger
         self.logger = logger

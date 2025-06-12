@@ -1,0 +1,27 @@
+general:
+  benchmark:
+    description: "Enable torch.backends.cudnn.benchmark -- Faster in some cases, test in your own environment"
+    data_type: Boolean
+    Value: False
+
+model:
+  architecture:
+    description: "Model Architecture - Options: unet, unet1, unetplus, cmunet_v1, cmunet_v2,cmunext, transunet, odsnet"
+    data_type: String
+    Value: "odsnet"
+
+data:
+  dataset:
+    description: "Dataset - Options: 'Duke', 'UCL', 'XRay', 'XRayNew', Sqaure"
+    data_type: String
+    Value: "cityscapes"
+
+  batch_size:
+    description: "Batch Size - Number of images per batch"
+    data_type: Integer
+    Value: 4
+
+  num_workers:
+    description: "Number of workers for data loading"
+    data_type: Integer
+    Value: 4
