@@ -14,7 +14,7 @@ module add python/anaconda/2024.06/
 module add cuda/10.2.89
 nvidia-smi
 
-source activate CATHMTL
+source activate torch_lts
 
 export CUDA_VISIBLE_DEVICES=0
 export OMP_NUM_THREADS=1
