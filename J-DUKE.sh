@@ -14,7 +14,7 @@ module add python/anaconda/2024.06/
 module add cuda/11.8
 nvidia-smi
 
-source activate /gpfs/home/pcw21qbu/scripts/AI_Networks/CATHMTL_Square/.venv/bin/activate
+conda activate torch_lts
 
 export CUDA_VISIBLE_DEVICES=0
 export OMP_NUM_THREADS=1
