@@ -14,6 +14,7 @@ module add python/anaconda/2024.06/
 module add cuda/11.8
 nvidia-smi
 
+conda init
 conda activate torch_lts
 
 export CUDA_VISIBLE_DEVICES=0
