@@ -48,4 +48,4 @@ Python setup.py build_ext --inplace
 /////////////ENV setup//////////////////////////////
 python3.12 -m venv .venv
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-pip3 install ml_collections matplotlib opencv-python pandas pyyaml tensorboard
+pip3 install ml_collections matplotlib opencv-python pandas pyyaml tensorboard scipy

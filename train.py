@@ -68,6 +68,7 @@ Dataloader related
 if config['dataset'] == 'Duke':
     config['data_root'] = os.path.join(config['data_root'], 'DukeData')
     train_dataset = OCTDataset(data_root=config['data_root'], split='train', size=config['size'])
+    print(f'Train dataset size: {len(train_dataset)}')
     train_loader = DataLoader(train_dataset, batch_size=config['batch_size'], shuffle=True)
     val_dataset = OCTDataset(data_root=config['data_root'], split='val', size=config['size'])
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
