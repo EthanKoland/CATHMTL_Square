@@ -34,6 +34,12 @@ python train.py \
     --batch_size ${batch_size} #\
     #--multitask
 # --load_network ${load_network}
+#
+# python train.py --arch odsnet --dataset UCL --data_root data --batch_size 128
+#
+#
+#
+
  
   
 
