@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --mail-type=NONE                 # Mail events (NONE,BEGIN,END,FAIL,ALL)
+#SBATCH --mail-type=FAIL,END                 # Mail events (NONE,BEGIN,END,FAIL,ALL)
 #SBATCH --nodes=1                        # limit to one node
 #SBATCH -p gpu-rtx6000-2                 # Where queue to use
 #SBATCH --gres=gpu:1                     # number of GPUs per node
@@ -7,14 +7,15 @@
 #SBATCH --mem=80G
 #SBATCH -c 12                            # memory
 #SBATCH --time=7-00:00                   # time (DD-HH:MM)
-#SBATCH --job-name=gpu-will_job          # Job name
-#SBATCH -o gpu-test-%j.out               # Standard output log
-#SBATCH -e gpu-test-%j.err               # Standard error log
+#SBATCH --job-name=CATHMTL_Square_Step1        # Job name
+#SBATCH --output=R-out-%x-%j.out          #Standard output log
+#SBATCH --error=R-err-%x-%j.err          #Standard error log
+
 module add python/anaconda/2024.06/
-module add cuda/10.2.89
+module add cuda/11.8
 nvidia-smi
 
-source activate torch_lts
+source.venv/bin/activate
 
 export CUDA_VISIBLE_DEVICES=0
 export OMP_NUM_THREADS=1
