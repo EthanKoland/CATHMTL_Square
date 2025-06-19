@@ -15,7 +15,7 @@ module add python/anaconda/2024.06/
 module add cuda/11.8
 nvidia-smi
 
-source.venv/bin/activate
+source .venv/bin/activate
 
 export CUDA_VISIBLE_DEVICES=0
 export OMP_NUM_THREADS=1
